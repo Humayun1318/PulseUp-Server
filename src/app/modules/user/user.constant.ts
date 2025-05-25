@@ -1,0 +1,6 @@
+export const USERNAME_VALIDATION = {
+  FIRST_NAME_MIN: 2,
+  FIRST_NAME_MAX: 15,
+  LAST_NAME_MIN: 2,
+  LAST_NAME_MAX: 15,
+} as const;
