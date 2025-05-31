@@ -26,7 +26,13 @@ export interface IUser extends Document {
   updatedAt: Date;
 }
 
-export interface UserModel extends Model<IUser> {
+// for instance methods
+export interface IUserMethods {
+  isPasswordMatch(plainPassword: string): Promise<boolean>;
+}
+
+export interface UserModel
+  extends Model<IUser, Record<string, never>, IUserMethods> {
   isUserExistById(id: string): Promise<boolean>;
   findUserById(id: string): Promise<IUser | null>;
 }

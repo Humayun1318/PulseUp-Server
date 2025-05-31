@@ -18,8 +18,7 @@ export const createUserIntoDB = async (
   payload.lastLoginAt = new Date();
   const user = await User.create(payload);
 
-  // return sanitizeUser(user);
-  return user;
+  return sanitizeUser(user);
 };
 
 export const AuthService = {

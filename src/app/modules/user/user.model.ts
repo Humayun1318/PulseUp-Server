@@ -2,8 +2,9 @@ import bcrypt from 'bcrypt';
 import { model, Schema } from 'mongoose';
 
 import { USERNAME_VALIDATION } from './user.constant';
-import type { IUser, UserModel } from './user.interface';
+import type { IUser, IUserMethods, UserModel } from './user.interface';
 import config from '../../config';
+
 const UserNameSchema = new Schema(
   {
     firstName: {
@@ -36,7 +37,7 @@ const UserNameSchema = new Schema(
   { _id: false }, // This prevents mongoose from creating a separate _id for the nested schema
 );
 
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     username: {
       type: UserNameSchema,
@@ -146,7 +147,7 @@ UserSchema.statics.isUserExistById = async function (
 
 // searching the user to get the user
 UserSchema.statics.findUserById = function (id: string): Promise<IUser | null> {
-  return this.findById(id);
+  return this.findById(id).select('+password');
 };
 
 // for hashing password
@@ -158,5 +159,17 @@ UserSchema.pre('save', async function () {
 });
 
 // to set empty for password field
-// UserSchema.post('save', async function(doc, next))
+UserSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+// password matching check using instance methods
+UserSchema.methods.isPasswordMatch = async function (
+  plainPassword: string,
+): Promise<boolean> {
+  const isMatch = await bcrypt.compare(plainPassword, this.password);
+  return isMatch;
+};
+
 export const User = model<IUser, UserModel>('User', UserSchema);

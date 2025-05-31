@@ -5,6 +5,8 @@ export const getSingleUserFromDb = async (id: string): Promise<IUser> => {
   const user = await User.findUserById(id);
   console.log(user);
 
+  const isM = await user.is
+
   if (user === null) {
     throw new Error('User not found');
   }
