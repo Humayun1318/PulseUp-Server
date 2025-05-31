@@ -1,9 +1,9 @@
-import type { Types } from 'mongoose';
+import bcrypt from 'bcrypt';
 import { model, Schema } from 'mongoose';
 
-import { FOLLOWER_LIMIT, USERNAME_VALIDATION } from './user.constant';
-import type { IUser } from './user.interface';
-
+import { USERNAME_VALIDATION } from './user.constant';
+import type { IUser, UserModel } from './user.interface';
+import config from '../../config';
 const UserNameSchema = new Schema(
   {
     firstName: {
@@ -117,6 +117,7 @@ const UserSchema = new Schema<IUser>(
 
     lastLoginAt: {
       type: Date,
+      required: [true, 'last login info need!'],
     },
   },
   {
@@ -135,4 +136,27 @@ UserSchema.virtual('followingCount').get(function (this: IUser) {
   return this.following.length;
 });
 
-export const User = model<IUser>('User', UserSchema);
+// User exist checking yes/no
+UserSchema.statics.isUserExistById = async function (
+  id: string,
+): Promise<boolean> {
+  const exists = await this.exists({ _id: id });
+  return exists !== null;
+};
+
+// searching the user to get the user
+UserSchema.statics.findUserById = function (id: string): Promise<IUser | null> {
+  return this.findById(id);
+};
+
+// for hashing password
+UserSchema.pre('save', async function () {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+});
+
+// to set empty for password field
+// UserSchema.post('save', async function(doc, next))
+export const User = model<IUser, UserModel>('User', UserSchema);

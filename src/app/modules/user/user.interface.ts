@@ -1,4 +1,4 @@
-import type { Document, Types } from 'mongoose';
+import type { Document, Model, Types } from 'mongoose';
 
 export interface IUserName {
   firstName: string;
@@ -24,4 +24,9 @@ export interface IUser extends Document {
   lastLoginAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface UserModel extends Model<IUser> {
+  isUserExistById(id: string): Promise<boolean>;
+  findUserById(id: string): Promise<IUser | null>;
 }

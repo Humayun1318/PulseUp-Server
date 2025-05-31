@@ -1,4 +1,4 @@
-import status from 'http-status';
+import httpStatus from 'http-status';
 
 import { createUserIntoDB } from './auth.service';
 import catchAsync from '../../utils/catchAsync';
@@ -8,9 +8,9 @@ const createUserHandler = catchAsync(async (req, res) => {
   const user = await createUserIntoDB(req.body);
 
   sendResponse(res, {
-    statusCode: status.OK,
+    statusCode: httpStatus.CREATED,
     success: true,
-    message: 'User is retrieved successfully',
+    message: 'User is created successfully',
     data: user,
   });
 });

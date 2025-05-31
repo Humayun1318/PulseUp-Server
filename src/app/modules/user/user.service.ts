@@ -1,23 +1,23 @@
 import type { IUser } from './user.interface';
 import { User } from './user.model';
-import { isValidMongodbObjectId } from '../../utils/isValidMongodbObjectId';
 
 export const getSingleUserFromDb = async (id: string): Promise<IUser> => {
-  if (!isValidMongodbObjectId(id)) {
-    throw new Error('Invalid user ID');
-  }
+  const user = await User.findUserById(id);
+  console.log(user);
 
-  const result = await User.findById(id);
-
-  if (result === null || result === undefined) {
+  if (user === null) {
     throw new Error('User not found');
   }
 
-  if (result.isDeleted === true || result.isActive === false) {
+  if (
+    user.isDeleted === true ||
+    user.isActive === false ||
+    user.isBanned === true
+  ) {
     throw new Error('User is inactive or deleted');
   }
 
-  return result;
+  return user;
 };
 
 export const UserService = {

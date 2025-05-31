@@ -29,14 +29,17 @@
   "author": "Humayun <humayunkabir6267@gmail.com> (https://github.com/Humayun1318)",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "http-status": "^2.1.0",
     "mongoose": "^8.15.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "zod": "^3.25.30"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.15.18",
