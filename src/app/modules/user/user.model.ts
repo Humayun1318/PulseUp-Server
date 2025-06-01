@@ -4,6 +4,7 @@ import { model, Schema } from 'mongoose';
 import { USERNAME_VALIDATION } from './user.constant';
 import type { IUser, IUserMethods, UserModel } from './user.interface';
 import config from '../../config';
+import { string } from 'zod';
 
 const UserNameSchema = new Schema(
   {
@@ -62,11 +63,13 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     profilePic: {
       type: String,
       default: '',
+      trim: true,
     },
 
     coverPic: {
       type: String,
       default: '',
+      trim: true,
     },
 
     bio: {
@@ -147,7 +150,7 @@ UserSchema.statics.isUserExistById = async function (
 
 // searching the user to get the user
 UserSchema.statics.findUserById = function (id: string): Promise<IUser | null> {
-  return this.findById(id).select('+password');
+  return this.findById(id);
 };
 
 // for hashing password

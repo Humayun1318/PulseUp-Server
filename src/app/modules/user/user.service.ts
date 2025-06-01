@@ -1,24 +1,17 @@
+import httpStatus from 'http-status';
+
 import type { IUser } from './user.interface';
 import { User } from './user.model';
+import validateUser from './user.utils';
+import AppError from '../../errors/AppError';
 
-export const getSingleUserFromDb = async (id: string): Promise<IUser> => {
-  const user = await User.findUserById(id);
-  console.log(user);
+export const getSingleUserFromDb = async (
+  id: string,
+): Promise<IUser | null> => {
+  const user = await User.findById(id);
 
-  const isM = await user.is
-
-  if (user === null) {
-    throw new Error('User not found');
-  }
-
-  if (
-    user.isDeleted === true ||
-    user.isActive === false ||
-    user.isBanned === true
-  ) {
-    throw new Error('User is inactive or deleted');
-  }
-
+  // checking isDeleted,isBanned, isActive and also the user exist or not
+  await validateUser(user);
   return user;
 };
 

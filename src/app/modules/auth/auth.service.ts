@@ -1,9 +1,11 @@
 import httpStatus from 'http-status';
 
+import type { ILogin } from './auth.interface';
 import AppError from '../../errors/AppError';
 import { sanitizeUser } from '../../utils/sanitizeUser';
 import type { IUser } from '../user/user.interface';
 import { User } from '../user/user.model';
+import validateUser from '../user/user.utils';
 
 export const createUserIntoDB = async (
   payload: IUser,
@@ -21,6 +23,25 @@ export const createUserIntoDB = async (
   return sanitizeUser(user);
 };
 
+export const loginUser = async (payload: ILogin) => {
+  const { email, password } = payload;
+
+  const user = await User.findOne({ email: email }).select('+password');
+
+  await validateUser(user, password);
+
+  const re = await User.findOneAndUpdate(
+    { email: email },
+    {
+      lastLoginAt: new Date(),
+    },
+    { new: true },
+  );
+
+  return re;
+};
+
 export const AuthService = {
   createUserIntoDB,
+  loginUser,
 };
