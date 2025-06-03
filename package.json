@@ -33,6 +33,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "http-status": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
     "typescript": "^5.8.3",
     "zod": "^3.25.30"
@@ -41,6 +42,7 @@
     "@eslint/js": "^9.27.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.15.18",
     "@typescript-eslint/eslint-plugin": "^8.32.1",

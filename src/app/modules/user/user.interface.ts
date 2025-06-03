@@ -7,6 +7,7 @@ export interface IUserName {
 
 // Main User Interface
 export interface IUser extends Document {
+  _id: string;
   username: IUserName;
   email: string;
   password: string;

@@ -1,9 +1,6 @@
-import httpStatus from 'http-status';
-
 import type { IUser } from './user.interface';
 import { User } from './user.model';
 import validateUser from './user.utils';
-import AppError from '../../errors/AppError';
 
 export const getSingleUserFromDb = async (
   id: string,

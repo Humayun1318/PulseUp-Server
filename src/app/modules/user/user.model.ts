@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import { model, Schema } from 'mongoose';
+import { string } from 'zod';
 
 import { USERNAME_VALIDATION } from './user.constant';
 import type { IUser, IUserMethods, UserModel } from './user.interface';
 import config from '../../config';
-import { string } from 'zod';
 
 const UserNameSchema = new Schema(
   {
@@ -121,7 +121,6 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
 
     lastLoginAt: {
       type: Date,
-      required: [true, 'last login info need!'],
     },
   },
   {
