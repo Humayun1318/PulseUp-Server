@@ -1,5 +1,7 @@
 import type { Document, Model, Types } from 'mongoose';
 
+import type { USER_ROLE } from './user.constant';
+
 export interface IUserName {
   firstName: string;
   lastName: string;
@@ -27,6 +29,9 @@ export interface IUser extends Document {
   updatedAt: Date;
 }
 
+export type TUserRole = keyof typeof USER_ROLE;
+export type TUserWithInsMethods = IUser & IUserMethods;
+
 // for instance methods
 export interface IUserMethods {
   isPasswordMatch(plainPassword: string): Promise<boolean>;
@@ -35,5 +40,5 @@ export interface IUserMethods {
 export interface UserModel
   extends Model<IUser, Record<string, never>, IUserMethods> {
   isUserExistById(id: string): Promise<boolean>;
-  findUserById(id: string): Promise<IUser | null>;
+  findUserById(id: string): Promise<TUserWithInsMethods | null>;
 }

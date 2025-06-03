@@ -1,9 +1,13 @@
 import bcrypt from 'bcrypt';
 import { model, Schema } from 'mongoose';
-import { string } from 'zod';
 
 import { USERNAME_VALIDATION } from './user.constant';
-import type { IUser, IUserMethods, UserModel } from './user.interface';
+import type {
+  IUser,
+  IUserMethods,
+  TUserWithInsMethods,
+  UserModel,
+} from './user.interface';
 import config from '../../config';
 
 const UserNameSchema = new Schema(
@@ -148,8 +152,10 @@ UserSchema.statics.isUserExistById = async function (
 };
 
 // searching the user to get the user
-UserSchema.statics.findUserById = function (id: string): Promise<IUser | null> {
-  return this.findById(id);
+UserSchema.statics.findUserById = function (
+  id: string,
+): Promise<TUserWithInsMethods | null> {
+  return this.findById(id) as Promise<TUserWithInsMethods | null>;
 };
 
 // for hashing password

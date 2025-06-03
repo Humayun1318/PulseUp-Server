@@ -5,3 +5,7 @@ export const USERNAME_VALIDATION = {
   LAST_NAME_MAX: 15,
 } as const;
 export const passwordMinNumber = 6;
+export const USER_ROLE = {
+  user: 'user',
+  admin: 'admin',
+} as const;

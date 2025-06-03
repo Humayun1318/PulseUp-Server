@@ -1,24 +1,15 @@
 import httpStatus from 'http-status';
 
+import type { TUserWithInsMethods } from './user.interface';
 import AppError from '../../errors/AppError';
 
-type TUser = {
-  isDeleted?: boolean;
-  isBanned?: boolean;
-  isActive?: boolean;
-  isPasswordMatch: (password: string) => Promise<boolean>;
-};
-
 async function validateUser(
-  user: TUser | null,
+  user: TUserWithInsMethods | null,
   password?: string,
 ): Promise<void> {
   // 1. Check if user exists
   if (user === null) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      'User not found. Please check the provided credentials or register.',
-    );
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
 
   // 2. Check if user is deleted
